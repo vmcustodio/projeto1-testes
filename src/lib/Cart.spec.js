@@ -97,5 +97,51 @@ describe('Cart', () => {
         }
         `);
     });
+
+    it('should return an object with the total and the list of items when summary () is called', () => {
+      cart.add({
+        product,
+        quantity: 2,
+      });
+
+      cart.add({
+        product: product2,
+        quantity: 3,
+      });
+
+      expect(cart.summary()).toMatchInlineSnapshot(`
+        {
+          "items": [
+            {
+              "product": {
+                "price": 35388,
+                "title": "Adidas running shoes - men",
+              },
+              "quantity": 2,
+            },
+            {
+              "product": {
+                "price": 41872,
+                "title": "Adidas running shoes - men",
+              },
+              "quantity": 3,
+            },
+          ],
+          "total": 196392,
+        }
+        `);
+      expect(cart.getTotal()).toBeGreaterThan(0);
+    });
+
+    it('should reset the cart when checkout() is called', () => {
+      cart.add({
+        product: product2,
+        quantity: 3,
+      });
+
+      cart.checkout();
+
+      expect(cart.getTotal()).toEqual(0);
+    });
   });
 });
